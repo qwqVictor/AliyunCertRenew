@@ -17,11 +17,12 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
-const RENEW_THRESHOLD = 7 * 86400
+const RENEW_THRESHOLD = 14 * 86400
 
 func CreateClient() (*cas.Client, error) {
-	keyId := os.Getenv("ACCESS_KEY_ID")
-	keySecret := os.Getenv("ACCESS_KEY_SECRET")
+	keyId := os.Getenv("ALIBABA_CLOUD_ACCESS_KEY_ID")
+	keySecret := os.Getenv("ALIBABA_CLOUD_ACCESS_KEY_SECRET")
+	keyToken := os.Getenv("ALIBABA_CLOUD_SECURITY_TOKEN")
 
 	if keyId == "" || keySecret == "" {
 		return nil, fmt.Errorf("please set ACCESS_KEY_ID and ACCESS_KEY_SECRET")
@@ -30,6 +31,7 @@ func CreateClient() (*cas.Client, error) {
 	config := &openapi.Config{
 		AccessKeyId:     tea.String(keyId),
 		AccessKeySecret: tea.String(keySecret),
+		SecurityToken:   tea.String(keyToken),
 	}
 
 	config.Endpoint = tea.String("cas.aliyuncs.com")
